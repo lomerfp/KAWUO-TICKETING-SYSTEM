@@ -319,6 +319,17 @@ th {
   border-color: var(--brand-blue);
 }
 
+.name-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.name-fields > div {
+  display: grid;
+  gap: 10px;
+}
+
 .login-button {
   width: 100%;
   min-height: 46px;
@@ -328,6 +339,16 @@ th {
 .login-footnote {
   margin: 24px 0 0;
   font-size: .82rem;
+}
+
+.text-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brand-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
 
 .error-message {
@@ -365,5 +386,9 @@ th {
 
   .login-panel {
     padding: 26px 22px;
+  }
+
+  .name-fields {
+    grid-template-columns: 1fr;
   }
 }

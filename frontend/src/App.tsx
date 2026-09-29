@@ -40,7 +40,11 @@ async function getApiError(response: Response) {
 
 export default function App() {
   const [token, setToken] = useState(() => sessionStorage.getItem(ACCESS_TOKEN_KEY));
+  const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState<User | null>(null);
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
@@ -88,15 +92,17 @@ export default function App() {
     return () => controller.abort();
   }, [token]);
 
-  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+  async function handleAuthSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/login/`, {
+      const response = await fetch(`${API_BASE_URL}/api/auth/${isRegistering ? 'register' : 'login'}/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(isRegistering
+          ? { username, email, first_name: firstName, last_name: lastName, password }
+          : { username, password }),
       });
       if (!response.ok) throw new Error(await getApiError(response));
       const result = await response.json();
@@ -127,20 +133,37 @@ export default function App() {
             <div className="brand-mark">K</div>
             <div><strong>KAWUO</strong><small>IT Service Management</small></div>
           </div>
-          <p className="eyebrow">Secure staff access</p>
-          <h1 id="login-title">Sign in to your workspace</h1>
-          <p className="login-copy">Use your KAWUO ITSM account to access your service dashboard.</p>
-          <form className="login-form" onSubmit={handleLogin}>
+          <p className="eyebrow">{isRegistering ? 'Staff account setup' : 'Secure staff access'}</p>
+          <h1 id="login-title">{isRegistering ? 'Create your staff account' : 'Sign in to your workspace'}</h1>
+          <p className="login-copy">
+            {isRegistering
+              ? 'New accounts receive staff access. IT support and administrator access is provisioned separately.'
+              : 'Use your KAWUO ITSM account to access your service dashboard.'}
+          </p>
+          <form className="login-form" onSubmit={handleAuthSubmit}>
             <label htmlFor="username">Username</label>
             <input id="username" autoComplete="username" value={username} onChange={(event) => setUsername(event.target.value)} required />
+            {isRegistering && <>
+              <label htmlFor="email">Email</label>
+              <input id="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+              <div className="name-fields">
+                <div><label htmlFor="first-name">First name</label><input id="first-name" autoComplete="given-name" value={firstName} onChange={(event) => setFirstName(event.target.value)} /></div>
+                <div><label htmlFor="last-name">Last name</label><input id="last-name" autoComplete="family-name" value={lastName} onChange={(event) => setLastName(event.target.value)} /></div>
+              </div>
+            </>}
             <label htmlFor="password">Password</label>
-            <input id="password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+            <input id="password" type="password" autoComplete={isRegistering ? 'new-password' : 'current-password'} value={password} onChange={(event) => setPassword(event.target.value)} required />
             {error && <p className="error-message" role="alert">{error}</p>}
             <button className="primary-button login-button" type="submit" disabled={loading}>
-              {loading ? 'Signing in…' : 'Sign in'}
+              {loading ? (isRegistering ? 'Creating account…' : 'Signing in…') : (isRegistering ? 'Create staff account' : 'Sign in')}
             </button>
           </form>
-          <p className="login-footnote">Account access is managed by your IT administrator.</p>
+          <p className="login-footnote">
+            {isRegistering ? 'Already registered?' : 'New to KAWUO ITSM?'}{' '}
+            <button className="text-button" type="button" onClick={() => { setIsRegistering(!isRegistering); setError(''); }}>
+              {isRegistering ? 'Sign in' : 'Create a staff account'}
+            </button>
+          </p>
         </section>
       </main>
     );

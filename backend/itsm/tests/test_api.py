@@ -47,6 +47,24 @@ class AuthAndTicketAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(User.objects.filter(username="new_admin").exists())
 
+    def test_public_registration_creates_staff_account_and_tokens(self):
+        response = self.client.post(
+            "/api/auth/register/",
+            {
+                "username": "new_staff",
+                "email": "new-staff@example.org",
+                "password": "AnotherStrongPass123!",
+                "first_name": "New",
+                "last_name": "Staff",
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        user = User.objects.get(username="new_staff")
+        self.assertEqual(user.role, "staff")
+        self.assertIn("access", response.data)
+        self.assertIn("refresh", response.data)
+
     def test_root_health_check_is_public(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
