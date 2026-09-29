@@ -4,8 +4,7 @@ services:
     env: python
     plan: free
     rootDir: backend
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput
-    releaseCommand: python manage.py migrate --noinput
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate --noinput
     startCommand: gunicorn kawuo_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 2
     envVars:
       - key: PYTHON_VERSION
