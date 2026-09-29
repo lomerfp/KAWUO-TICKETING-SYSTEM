@@ -137,6 +137,13 @@ button, a {
   cursor: pointer;
 }
 
+.header-actions,
+.panel-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -174,6 +181,87 @@ button, a {
 
 .panel {
   padding: 20px;
+}
+
+.ticket-workspace {
+  margin-top: 24px;
+}
+
+.ticket-form {
+  display: grid;
+  gap: 14px;
+  max-width: 900px;
+  margin: 18px 0 24px;
+}
+
+.ticket-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--text);
+  font-size: .88rem;
+  font-weight: 600;
+}
+
+.ticket-form input,
+.ticket-form textarea,
+.ticket-form select,
+.inline-action input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: white;
+  color: var(--text);
+  font: inherit;
+}
+
+.ticket-form textarea {
+  resize: vertical;
+}
+
+.lookup-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ticket-workflow-cell {
+  min-width: 230px;
+}
+
+.ticket-workflow-cell > button {
+  margin: 0 5px 6px 0;
+}
+
+.inline-action {
+  display: flex;
+  gap: 6px;
+  margin: 4px 0 8px;
+}
+
+.small-button {
+  min-height: 32px;
+  padding: 6px 9px;
+  border: 1px solid #b9cec7;
+  border-radius: 5px;
+  background: #f1f7f4;
+  color: #15594f;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.small-button:hover {
+  background: #e2f0eb;
+}
+
+.comment-line {
+  display: block;
+  max-width: 340px;
+  margin-top: 6px;
+  color: var(--muted);
+  white-space: normal;
 }
 
 .table-scroll {
@@ -390,5 +478,19 @@ th {
 
   .name-fields {
     grid-template-columns: 1fr;
+  }
+
+  .header-actions,
+  .panel-tools {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .lookup-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-workflow-cell {
+    min-width: 200px;
   }
 }

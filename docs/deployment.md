@@ -15,6 +15,10 @@
 5. configure external PostgreSQL and Redis services
 6. enable secure file storage and backup policies
 
+### Free Render + Neon configuration
+
+The repository Blueprint deploys the Django API and React frontend. The API connects to Neon through the secret `DATABASE_URL` setting. Django migrations create standard departments, categories, and priorities without creating demo users. Staff can register from the login page; use the documented `create_it_admin` management command in the Render API Shell to provision IT administrators. Render's free API instance can sleep after inactivity, so the first request may take longer.
+
 ## Backup strategy
 
 - daily PostgreSQL dumps to an off-server volume

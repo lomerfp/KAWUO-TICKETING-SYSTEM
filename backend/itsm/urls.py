@@ -11,12 +11,19 @@ from .views import (
     RegisterView,
     ServiceRequestViewSet,
     TicketViewSet,
+    StaffDepartmentViewSet,
+    TicketCategoryViewSet,
+    TicketPriorityViewSet,
     dashboard_summary,
     me,
+    ticket_report,
 )
 
 router = DefaultRouter()
 router.register(r"departments", DepartmentViewSet, basename="departments")
+router.register(r"ticket-departments", StaffDepartmentViewSet, basename="ticket-departments")
+router.register(r"categories", TicketCategoryViewSet, basename="categories")
+router.register(r"priorities", TicketPriorityViewSet, basename="priorities")
 router.register(r"tickets", TicketViewSet, basename="tickets")
 router.register(r"assets", AssetViewSet, basename="assets")
 router.register(r"maintenance", MaintenanceRecordViewSet, basename="maintenance")
@@ -29,5 +36,6 @@ urlpatterns = [
     path("auth/login/", LoginView.as_view(), name="login"),
     path("auth/me/", me, name="me"),
     path("dashboard/summary/", dashboard_summary, name="dashboard-summary"),
+    path("reports/tickets.csv", ticket_report, name="ticket-report"),
     path("", include(router.urls)),
 ]

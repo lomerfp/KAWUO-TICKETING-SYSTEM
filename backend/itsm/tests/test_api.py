@@ -6,9 +6,9 @@ from itsm.models import Department, Notification, Ticket, TicketCategory, Ticket
 
 class AuthAndTicketAPITests(APITestCase):
     def setUp(self):
-        self.department = Department.objects.create(name="Operations", code="OPS")
-        self.category = TicketCategory.objects.create(name="Network")
-        self.priority = TicketPriority.objects.create(name="HIGH", response_hours=2)
+        self.department, _ = Department.objects.get_or_create(name="Operations", code="OPS")
+        self.category, _ = TicketCategory.objects.get_or_create(name="Network")
+        self.priority, _ = TicketPriority.objects.get_or_create(name="HIGH", defaults={"response_hours": 2})
 
         self.staff = User.objects.create_user(
             username="staff_user",
@@ -86,6 +86,50 @@ class AuthAndTicketAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Ticket.objects.count(), 1)
         self.assertEqual(Ticket.objects.first().requester, self.staff)
+
+    def test_staff_can_load_ticket_form_lookups(self):
+        self.client.force_authenticate(user=self.staff)
+        for endpoint in ("/api/categories/", "/api/priorities/", "/api/ticket-departments/"):
+            response = self.client.get(endpoint)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_staff_cannot_download_admin_ticket_report(self):
+        self.client.force_authenticate(user=self.staff)
+        response = self.client.get("/api/reports/tickets.csv")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_support_can_download_ticket_report(self):
+        self.client.force_authenticate(user=self.support)
+        response = self.client.get("/api/reports/tickets.csv")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response["Content-Type"], "text/csv; charset=utf-8")
+        self.assertIn("Ticket,Title,Requester", response.content.decode())
+
+    def test_ticket_cannot_be_closed_before_resolution(self):
+        ticket = Ticket.objects.create(
+            title="Printer issue",
+            description="Offline",
+            requester=self.staff,
+            department=self.department,
+            category=self.category,
+            priority=self.priority,
+        )
+        self.client.force_authenticate(user=self.support)
+        response = self.client.post(f"/api/tickets/{ticket.pk}/close/", format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_resolution_requires_summary(self):
+        ticket = Ticket.objects.create(
+            title="Printer issue",
+            description="Offline",
+            requester=self.staff,
+            department=self.department,
+            category=self.category,
+            priority=self.priority,
+        )
+        self.client.force_authenticate(user=self.support)
+        response = self.client.post(f"/api/tickets/{ticket.pk}/resolve/", {"resolution": " "}, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_it_support_can_list_all_tickets(self):
         Ticket.objects.create(

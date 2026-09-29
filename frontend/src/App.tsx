@@ -1,9 +1,11 @@
 import { FormEvent, useEffect, useState } from 'react';
+import TicketWorkspace from './TicketWorkspace';
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://kawuo-itsm-api.onrender.com').replace(/\/$/, '');
 const ACCESS_TOKEN_KEY = 'kawuo_access_token';
 
 type User = {
+  id: number;
   username: string;
   first_name: string;
   last_name: string;
@@ -213,34 +215,7 @@ export default function App() {
           ))}
         </section>
 
-        <section className="panel">
-          <div className="panel-header">
-            <h2>Recent tickets</h2>
-            <span className="role-label">{user.role.replace(/_/g, ' ')}</span>
-          </div>
-
-          {loading ? <p className="table-state">Loading tickets…</p> : summary.recent_tickets.length === 0 ? (
-            <p className="table-state">No tickets to show yet.</p>
-          ) : (
-            <div className="table-scroll">
-              <table>
-                <thead>
-                  <tr><th>Ticket</th><th>Issue</th><th>Priority</th><th>Status</th></tr>
-                </thead>
-                <tbody>
-                  {summary.recent_tickets.map((ticket) => (
-                    <tr key={ticket.id}>
-                      <td>{ticket.ticket_number}</td>
-                      <td>{ticket.title}</td>
-                      <td><span className={`pill ${ticket.priority.name.toLowerCase()}`}>{ticket.priority.name}</span></td>
-                      <td>{ticket.status.replace(/_/g, ' ').toLowerCase()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
+        <TicketWorkspace apiBaseUrl={API_BASE_URL} token={token} user={user} />
       </main>
     </div>
   );
