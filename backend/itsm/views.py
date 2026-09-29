@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.http import JsonResponse
 from django.db.models import Count, Q
 from django.utils import timezone
 from rest_framework import status, viewsets
@@ -33,6 +34,10 @@ def create_notification(user, title, message):
     if user is None:
         return None
     return Notification.objects.create(user=user, title=title, message=message)
+
+
+def health_check(request):
+    return JsonResponse({"status": "ok"})
 
 
 class RegisterView(APIView):

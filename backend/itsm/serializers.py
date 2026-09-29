@@ -176,6 +176,7 @@ class LoginSerializer(serializers.Serializer):
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
+    role = serializers.ChoiceField(choices=[("staff", "Staff")], default="staff")
 
     class Meta:
         model = User
@@ -183,6 +184,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop("password")
+        validated_data["role"] = "staff"
         user = User(**validated_data)
         user.set_password(password)
         user.save()

@@ -33,6 +33,25 @@ class AuthAndTicketAPITests(APITestCase):
         self.assertIn("access", response.data)
         self.assertIn("refresh", response.data)
 
+    def test_public_registration_cannot_create_privileged_users(self):
+        response = self.client.post(
+            "/api/auth/register/",
+            {
+                "username": "new_admin",
+                "email": "new-admin@example.org",
+                "password": "AnotherStrongPass123!",
+                "role": "it_admin",
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse(User.objects.filter(username="new_admin").exists())
+
+    def test_root_health_check_is_public(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), {"status": "ok"})
+
     def test_staff_can_create_ticket(self):
         self.client.force_authenticate(user=self.staff)
         response = self.client.post(

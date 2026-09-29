@@ -108,7 +108,11 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
-if DATABASE_URL:
+USE_SQLITE_FOR_TESTS = os.environ.get("USE_SQLITE_FOR_TESTS", "False").lower() in {"1", "true", "yes"}
+if USE_SQLITE_FOR_TESTS and not DEBUG:
+    raise ImproperlyConfigured("USE_SQLITE_FOR_TESTS cannot be enabled when DEBUG=False")
+
+if DATABASE_URL and not USE_SQLITE_FOR_TESTS:
     DATABASES = {
         "default": dj_database_url.parse(
             DATABASE_URL,

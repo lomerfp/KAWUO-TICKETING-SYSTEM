@@ -1,13 +1,13 @@
 :root {
   color-scheme: light;
-  font-family: Inter, 'Segoe UI', sans-serif;
-  --brand-blue: #0f5fb7;
-  --brand-orange: #f59e0b;
-  --bg: #f4f7fb;
+  font-family: 'Aptos', 'Segoe UI', sans-serif;
+  --brand-blue: #086b61;
+  --brand-orange: #f3ae36;
+  --bg: #edf2ef;
   --panel: #ffffff;
-  --line: #dfe7f3;
-  --text: #1f2937;
-  --muted: #6b7280;
+  --line: #d5dfda;
+  --text: #1d2a27;
+  --muted: #66736e;
   --danger: #dc2626;
   --warning: #f59e0b;
   --success: #16a34a;
@@ -19,7 +19,7 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: radial-gradient(circle at 12% 18%, rgba(243, 174, 54, .13), transparent 28%), var(--bg);
   color: var(--text);
 }
 
@@ -34,7 +34,7 @@ button, a {
 
 .sidebar {
   width: 260px;
-  background: #0a2d4f;
+  background: #153c38;
   color: #fff;
   padding: 24px 18px;
 }
@@ -51,7 +51,7 @@ button, a {
   place-items: center;
   width: 38px;
   height: 38px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: linear-gradient(135deg, var(--brand-blue), var(--brand-orange));
   font-weight: 700;
 }
@@ -70,11 +70,13 @@ button, a {
   gap: 8px;
 }
 
-.nav a {
+.nav a,
+.nav span {
+  display: block;
   color: rgba(255,255,255,.82);
   text-decoration: none;
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .nav a.active,
@@ -94,6 +96,11 @@ button, a {
   margin-bottom: 28px;
 }
 
+.welcome-copy {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
 .topbar h1 {
   margin: 4px 0 0;
   font-size: clamp(2rem, 2vw, 2.5rem);
@@ -109,10 +116,24 @@ button, a {
 
 .primary-button {
   border: none;
-  background: linear-gradient(135deg, var(--brand-blue), #1d7de0);
+  background: var(--brand-blue);
   color: white;
   padding: 12px 18px;
-  border-radius: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.primary-button:disabled {
+  cursor: wait;
+  opacity: .72;
+}
+
+.secondary-button {
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -127,7 +148,7 @@ button, a {
 .panel {
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 8px;
   box-shadow: 0 6px 18px rgba(15, 95, 183, 0.04);
 }
 
@@ -153,6 +174,21 @@ button, a {
 
 .panel {
   padding: 20px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.table-state {
+  padding: 24px 8px;
+  color: var(--muted);
+}
+
+.role-label {
+  color: var(--muted);
+  text-transform: capitalize;
+  font-size: .9rem;
 }
 
 .panel-header {
@@ -212,6 +248,94 @@ th {
   color: #0369a1;
 }
 
+.pill.low {
+  background: rgba(8, 107, 97, .12);
+  color: var(--brand-blue);
+}
+
+.login-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(125deg, rgba(21, 60, 56, .97), rgba(8, 107, 97, .91)),
+    repeating-linear-gradient(45deg, transparent 0 18px, rgba(255,255,255,.04) 18px 19px);
+}
+
+.login-panel {
+  width: min(100%, 440px);
+  padding: 36px;
+  border: 1px solid rgba(255, 255, 255, .6);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .2);
+}
+
+.login-brand {
+  margin-bottom: 36px;
+}
+
+.login-brand small {
+  color: var(--muted);
+}
+
+.login-panel h1 {
+  margin: 8px 0;
+  font-size: 1.8rem;
+}
+
+.login-copy,
+.login-footnote {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.login-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.login-form label {
+  margin-top: 6px;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.login-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+}
+
+.login-form input:focus {
+  outline: 2px solid rgba(8, 107, 97, .28);
+  border-color: var(--brand-blue);
+}
+
+.login-button {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 10px;
+}
+
+.login-footnote {
+  margin: 24px 0 0;
+  font-size: .82rem;
+}
+
+.error-message {
+  margin: 4px 0;
+  color: var(--danger);
+  font-size: .9rem;
+}
+
 @media (max-width: 860px) {
   .app-shell {
     flex-direction: column;
@@ -219,9 +343,27 @@ th {
 
   .sidebar {
     width: 100%;
+    padding: 16px;
   }
 
   .main-panel {
     padding: 18px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .topbar h1 {
+    font-size: 1.7rem;
+  }
+
+  .stat-card {
+    min-height: 120px;
+  }
+
+  .login-panel {
+    padding: 26px 22px;
   }
 }
