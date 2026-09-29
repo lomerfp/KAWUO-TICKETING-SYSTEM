@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+.env
+.venv/
+venv/
+.env.local
+
+# Django
+media/
+staticfiles/
+
+# Node
+node_modules/
+.vite/
+dist/
+*.tsbuildinfo
+frontend/vite.config.js
+frontend/vite.config.d.ts
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
+
+# OS
+Thumbs.db
+.neon

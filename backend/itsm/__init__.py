@@ -1,0 +1,1 @@
+"""KAWUO ITSM application."""

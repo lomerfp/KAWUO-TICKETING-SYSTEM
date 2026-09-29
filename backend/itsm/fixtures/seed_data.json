@@ -1,0 +1,117 @@
+[
+  {
+    "model": "itsm.department",
+    "pk": 1,
+    "fields": {
+      "name": "Operations",
+      "code": "OPS",
+      "description": "General operations team",
+      "is_active": true
+    }
+  },
+  {
+    "model": "itsm.department",
+    "pk": 2,
+    "fields": {
+      "name": "Finance",
+      "code": "FIN",
+      "description": "Finance and administration",
+      "is_active": true
+    }
+  },
+  {
+    "model": "itsm.ticketcategory",
+    "pk": 1,
+    "fields": {
+      "name": "Hardware",
+      "parent": null,
+      "is_active": true
+    }
+  },
+  {
+    "model": "itsm.ticketcategory",
+    "pk": 2,
+    "fields": {
+      "name": "Network",
+      "parent": null,
+      "is_active": true
+    }
+  },
+  {
+    "model": "itsm.ticketpriority",
+    "pk": 1,
+    "fields": {
+      "name": "LOW",
+      "response_hours": 24,
+      "sla_color": "#60a5fa"
+    }
+  },
+  {
+    "model": "itsm.ticketpriority",
+    "pk": 2,
+    "fields": {
+      "name": "MEDIUM",
+      "response_hours": 8,
+      "sla_color": "#f59e0b"
+    }
+  },
+  {
+    "model": "itsm.ticketpriority",
+    "pk": 3,
+    "fields": {
+      "name": "HIGH",
+      "response_hours": 2,
+      "sla_color": "#f97316"
+    }
+  },
+  {
+    "model": "itsm.ticketpriority",
+    "pk": 4,
+    "fields": {
+      "name": "CRITICAL",
+      "response_hours": 0,
+      "sla_color": "#dc2626"
+    }
+  },
+  {
+    "model": "itsm.knowledgearticle",
+    "pk": 1,
+    "fields": {
+      "title": "How to connect to KAWUO Wi-Fi",
+      "summary": "Standard Wi-Fi connection steps for office devices.",
+      "content": "Open Wi-Fi settings, select KAWUO-WIFI, enter the office Wi-Fi password, and reconnect after verification.",
+      "author": null,
+      "category": "network",
+      "is_published": true,
+      "created_at": "2026-09-29T00:00:00Z",
+      "updated_at": "2026-09-29T00:00:00Z"
+    }
+  },
+  {
+    "model": "itsm.asset",
+    "pk": 1,
+    "fields": {
+      "asset_id": "ASSET-001",
+      "asset_tag": "KAWUO-LAP-014",
+      "serial_number": "SN-12345",
+      "type": "Laptop",
+      "brand": "Lenovo",
+      "model": "ThinkPad T14",
+      "purchase_date": "2025-02-10",
+      "purchase_cost": "1200.00",
+      "warranty_end": "2028-02-10",
+      "condition": "GOOD",
+      "location": "Moroto Office",
+      "assigned_user": null,
+      "department": 1,
+      "supplier": "IT Solutions Uganda",
+      "status": "ASSIGNED",
+      "operating_system": "Windows 11",
+      "ip_address": "10.0.0.20",
+      "mac_address": "00:1A:2B:3C:4D:5E",
+      "notes": "Primary laptop for operations staff",
+      "created_at": "2026-09-29T00:00:00Z",
+      "updated_at": "2026-09-29T00:00:00Z"
+    }
+  }
+]
